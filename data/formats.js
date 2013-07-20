@@ -69,7 +69,7 @@ exports.BattleFormats = {
 		challengeShow: true,
 		searchShow: true,
 		ruleset: ['Digimon', 'Species Clause'],
-		banlist: ['Illegal', 'Jogress', 'Burst', 'Mega', 'Ultimate', 'Champion']
+		banlist: ['Illegal', 'Jogress', 'Burst', 'Mega', 'Ultimate', 'Champion', 'Agumon (Burst Mode)']
 	},
 	intraining: {
 		name: "In-Training",
