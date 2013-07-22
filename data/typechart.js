@@ -1,35 +1,35 @@
 exports.BattleTypeChart = {
-  // For attributes 1 means neutral and 2 means strong. There's no resistance.
+  // For attributes 0 means neutral and 50 means strong. There's no resistance.
   attributes: {
     none: {
-      data: 1,
-      vaccine: 1,
-      virus: 1,
-      unknown: 1
+      data: 0,
+      vaccine: 0,
+      virus: 0,
+      unknown: 0
     },
     data: {
-      none: 2,
-      vaccine: 2,
-      virus: 1,
-      unknown: 1
+      none: 50,
+      vaccine: 50,
+      virus: 0,
+      unknown: 0
     },
     vaccine: {
-      none: 2,
-      data: 1,
-      virus: 2,
-      unknown: 1
+      none: 50,
+      data: 0,
+      virus: 50,
+      unknown: 0
     },
     virus: {
-      none: 2,
-      data: 2,
-      vaccine: 1,
-      unknown: 1
+      none: 50,
+      data: 50,
+      vaccine: 0,
+      unknown: 0
     },
     unknown: {
-      none: 2,
-      data: 2,
-      vaccine: 2,
-      virus: 2
+      none: 50,
+      data: 50,
+      vaccine: 50,
+      virus: 50
     },
   },
   elements: {

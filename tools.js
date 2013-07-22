@@ -80,21 +80,17 @@ module.exports = (function () {
 		}
 		return true;
 	};
-	Tools.prototype.getEffectiveness = function(type, target) {
+	Tools.prototype.getElementalEffectiveness = function(type, target) {
 		var totalTypeMod = 0;
-		for (var i=0; i<target.types.length; i++) {
-			if (!this.data.TypeChart[target.types[i]]) continue;
-			var typeMod = this.data.TypeChart[target.types[i]].damageTaken[type];
-			if (typeMod === 1) { // super-effective
-				totalTypeMod++;
-			}
-			if (typeMod === 2) { // resist
-				totalTypeMod--;
-			}
-			// in case of weird situations like Gravity, immunity is
-			// handled elsewhere
-		}
+		if (!this.data.TypeChart.elements[target.element]) continue;
+		var totalTypeMod = this.data.TypeChart.elements[target.element].damageTaken[type];
 		return totalTypeMod;
+	};
+	Tools.prototype.getAttributeEffectiveness = function(type, target) {
+		var totalAttrMod = 0;
+		if (!this.data.TypeChart.attributes[target.attribute]) continue;
+		var totalAttrMod = this.data.TypeChart.attributes[target.attribute].damageTaken[type];
+		return totalAttrMod;
 	};
 	Tools.prototype.getTemplate = function(template) {
 		if (!template || typeof template === 'string') {
