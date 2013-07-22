@@ -443,7 +443,7 @@ exports.Digivice = {
 	gravimon: {num:442},
 	gravimondarknessmode: {num:443},
 	greyknightsmon: {num:444},
-	greymon: {num:445,name:"Greymon",stage:'Champion',attribute:'Vaccine',element:'Fire',atype:'SA',types:["Dinosaur"],families:["Metal Empire","Virus Busters","Nature Spirits","Unknown"],baseStats:{},preevos:["Agumon"],evos:["MetalGreymon(Vaccine)","MetalGreymon(Virus)","SkullGreymon"],size:30.0,learnset["Nova Blast","Great Horns Attack","Grey Tooth","Great Tooth","Horn Impulse","Tail Crash","Fire Wall"]},
+	greymon: {num:445,name:"Greymon",stage:'Champion',attribute:'Vaccine',element:'Fire',atype:'SA',types:["Dinosaur"],families:["Metal Empire","Virus Busters","Nature Spirits","Unknown"],baseStats:{},preevos:["Agumon"],evos:["MetalGreymon (Vaccine)","MetalGreymon (Virus)","SkullGreymon"],size:30.0,learnset["Nova Blast","Great Horns Attack","Grey Tooth","Great Tooth","Horn Impulse","Tail Crash","Fire Wall"]},
 	greymon2010anime: {num:446},
 	greymono: {num:447},
 	greymonx: {num:448},
