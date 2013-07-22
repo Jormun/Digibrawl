@@ -96,32 +96,20 @@ exports.BattleMovedex = {
 	/**
 	 * Regular moves. Let's have fun putting them all!
 	 */
-	 babyclaw: {
-
-	 },
-	 babyflame: {
-
-	 },
-	 battlehawk: {
-
-	 },
-	 clawattack: {
-
-	 },
-	 clawuppercut: {
-
-	 },
-	 crossfire: {
-
-	 },
-	 hakasebo: {
-
-	 },
-	 hakasebou: {
-
-	 },
-	 pepperbreath: {
-		name: "Pepper Breath",
+	babyclaw: {
+		name: "Baby Claw",
+		basePower: 120,
+		desc: "Agumon attacks with its claws.",
+		shortDesc: "Claws the enemy.",
+		ds: 14,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Neutral"
+	},
+	babyflame: {
+		name: "Baby Flame",
 		basePower: 100,
 		desc: "Agumon shoots fireballs to the enemy.",
 		shortDesc: "Shoots fireballs.",
@@ -131,17 +119,20 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "ranged",
 		type: "Fire"
-	 },
-	 sharpclaw: {
+	},
+	hakasebo: {
 
-	 },
-	 sharperclaw: {
+	},
+	hakasebou: {
 
-	 },
-	 surudoitsume: {
+	},
+	sharpclaw: {
 
-	 },
-	 spitfireblast: {
+	},
+	sharperclaw: {
+
+	},
+	spitfireblast: {
 	 	name: "Spitfire Blast",
 		basePower: 275,
 		desc: "Agumon shoots flames to his enemies, burning and hurting them.",
@@ -152,5 +143,5 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "ranged",
 		type: "Fire"
-	 },
+	},
 };
