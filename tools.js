@@ -413,10 +413,10 @@ module.exports = (function () {
 		'In-Training': 1,
 		'Rookie': 1,
 		'Champion': 11,
-		'Ultimate': 31,
+		'Ultimate': 25,
 		'Mega': 41,
 		'Burst': 71,
-		'Jogress': 1
+		'Jogress': 41
 	};
 	Tools.prototype.validateSet = function(set, format, teamHas, forceThisMod) {
 		format = this.getFormat(format);
