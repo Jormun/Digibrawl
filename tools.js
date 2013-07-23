@@ -2,7 +2,7 @@
  * Tools
  * Digibrawl - http://www.digibrawl.com/
  *
- * Handles getting data about digimon, cards, etc.
+ * Handles getting data about digimon, card items, etc.
  *
  * This file is used by the main process (to validate teams)
  * as well as the individual simulator processes (to get
@@ -12,10 +12,10 @@
  */
 
 module.exports = (function () {
-	var dataTypes = ['FormatsData', 'Learnsets', 'Digivice', 'Digimoves', 'TypeChart', 'Scripts', 'Items', 'Formats'];
+	var dataTypes = ['FormatsData', 'Learnsets', 'Digivice', 'Moves', 'TypeChart', 'Scripts', 'Items', 'Formats'];
 	var dataFiles = {
 		'Digivice': 'digivice.js',
-		'Digimoves': 'moves.js',
+		'Moves': 'moves.js',
 		'TypeChart': 'typechart.js',
 		'Scripts': 'scripts.js',
 		'Items': 'items.js',
