@@ -394,7 +394,6 @@ var commands = exports.commands = {
 		targetUser.unmute(room.id);
 	},
 
-	ipmute: 'lock',
 	l: 'lock',
 	lock: function(target, room, user) {
 		if (!target) return this.parse('/help lock');
@@ -608,6 +607,7 @@ var commands = exports.commands = {
 		case 'true':
 		case 'yes':
 		case 'registered':
+			// TODO: Readd this
 			this.sendReply("Modchat registered has been removed.");
 			this.sendReply("If you're dealing with a spammer, make sure to run /loadbanlist.");
 			return false;
@@ -812,12 +812,6 @@ var commands = exports.commands = {
 
 		}
 		this.sendReply('Your hot-patch command was unrecognized.');
-	},
-
-	savelearnsets: function(target, room, user) {
-		if (this.can('hotpatch')) return false;
-		fs.writeFile('data/learnsets.js', 'exports.BattleLearnsets = '+JSON.stringify(BattleLearnsets)+";\n");
-		this.sendReply('learnsets.js saved.');
 	},
 
 	disableladder: function(target, room, user) {

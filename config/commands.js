@@ -28,10 +28,10 @@
  * cmd = the name of the command
  * message = the entire message sent by the user
  *
- * If a user types in "/msg zarel, hello"
- *   target = "zarel, hello"
+ * If a user types in "/msg Joim, hello"
+ *   target = "Joim, hello"
  *   cmd = "msg"
- *   message = "/msg zarel, hello"
+ *   message = "/msg Joim, hello"
  *
  * Commands return the message the user should say. If they don't
  * return anything or return something falsy, the user won't say
@@ -144,14 +144,9 @@
  */
 
 var commands = exports.commands = {
-
 	ip: 'whois',
-	getip: 'whois',
-	rooms: 'whois',
-	altcheck: 'whois',
 	alt: 'whois',
 	alts: 'whois',
-	getalts: 'whois',
 	whois: function(target, room, user) {
 		var targetUser = this.targetUserOrSelf(target);
 		if (!targetUser) {
@@ -185,7 +180,7 @@ var commands = exports.commands = {
 			this.sendReply('Group: ' + config.groups[targetUser.group].name + ' (' + targetUser.group + ')');
 		}
 		if (targetUser.staffAccess) {
-			this.sendReply('(Pok\xE9mon Showdown Development Staff)');
+			this.sendReply('(Digibrawl Development Staff)');
 		}
 		if (!targetUser.authenticated) {
 			this.sendReply('(Unregistered)');
@@ -227,22 +222,18 @@ var commands = exports.commands = {
 	 *********************************************************/
 
 	stats: 'data',
-	dex: 'data',
-	pokedex: 'data',
+	vice: 'data',
+	digivice: 'data',
 	data: function(target, room, user) {
 		if (!this.canBroadcast()) return;
 
-		var pokemon = Tools.getTemplate(target);
+		var digimon = Tools.getTemplate(target);
 		var item = Tools.getItem(target);
 		var move = Tools.getMove(target);
-		var ability = Tools.getAbility(target);
 
 		var data = '';
-		if (pokemon.exists) {
-			data += '|c|~|/data-pokemon '+pokemon.name+'\n';
-		}
-		if (ability.exists) {
-			data += '|c|~|/data-ability '+ability.name+'\n';
+		if (digimon.exists) {
+			data += '|c|~|/data-digimon '+digimon.name+'\n';
 		}
 		if (item.exists) {
 			data += '|c|~|/data-item '+item.name+'\n';
@@ -251,16 +242,15 @@ var commands = exports.commands = {
 			data += '|c|~|/data-move '+move.name+'\n';
 		}
 		if (!data) {
-			data = "||No pokemon, item, move, or ability named '"+target+"' was found. (Check your spelling?)";
+			data = "||No digimon, item, or move named '"+target+"' was found. (Check your spelling?)";
 		}
 
 		this.sendReply(data);
 	},
 
 	learnset: 'learn',
-	learnall: 'learn',
-	learn5: 'learn',
 	learn: function(target, room, user, connection, cmd) {
+		// TODO: Update this for Digimons learnsets
 		if (!target) return this.parse('/help learn');
 
 		if (!this.canBroadcast()) return;
@@ -271,10 +261,9 @@ var commands = exports.commands = {
 		var move = {};
 		var problem;
 		var all = (cmd === 'learnall');
-		if (cmd === 'learn5') lsetData.set.level = 5;
 
 		if (!template.exists) {
-			return this.sendReply('Pokemon "'+template.id+'" not found.');
+			return this.sendReply('Digimon "'+template.id+'" not found.');
 		}
 
 		if (targets.length < 2) {
@@ -309,7 +298,6 @@ var commands = exports.commands = {
 					prevSourceType = source.substr(0,2);
 					prevSourceCount = source.substr(2)?0:-1;
 					buffer += "<li>gen "+source.substr(0,1)+" "+sourceNames[source.substr(1,1)];
-					if (prevSourceType === '5E' && template.maleOnlyDreamWorld) buffer += " (cannot have DW ability)";
 					if (source.substr(2)) buffer += ": "+source.substr(2);
 				}
 			}
@@ -323,27 +311,27 @@ var commands = exports.commands = {
 	weakness: function(target, room, user){
 		var targets = target.split(/[ ,\/]/);
 
-		var pokemon = Tools.getTemplate(target);
+		var digimon = Tools.getTemplate(target);
 		var type1 = Tools.getType(targets[0]);
 		var type2 = Tools.getType(targets[1]);
 
-		if (pokemon.exists) {
-			target = pokemon.species;
+		if (digimon.exists) {
+			target = digimon.species;
 		} else if (type1.exists && type2.exists) {
-			pokemon = {types: [type1.id, type2.id]};
+			digimon = {types: [type1.id, type2.id]};
 			target = type1.id + "/" + type2.id;
 		} else if (type1.exists) {
-			pokemon = {types: [type1.id]};
+			digimon = {types: [type1.id]};
 			target = type1.id;
 		} else {
-			return this.sendReplyBox(target + " isn't a recognized type or pokemon.");
+			return this.sendReplyBox(target + " isn't a recognized type or Digimon.");
 		}
 
 		var weaknesses = [];
 		Object.keys(Data.base.TypeChart).forEach(function (type) {
-			var notImmune = Tools.getImmunity(type, pokemon);
+			var notImmune = Tools.getImmunity(type, digimon);
 			if (notImmune) {
-				var typeMod = Tools.getEffectiveness(type, pokemon);
+				var typeMod = Tools.getEffectiveness(type, digimon);
 				if (typeMod == 1) weaknesses.push(type);
 				if (typeMod == 2) weaknesses.push("<b>" + type + "</b>");
 			}
@@ -360,26 +348,26 @@ var commands = exports.commands = {
 	effectiveness: function(target, room, user) {
 		var targets = target.split(/[,/]/);
 		var type = Tools.getType(targets[1]);
-		var pokemon = Tools.getTemplate(targets[0]);
+		var digimon = Tools.getTemplate(targets[0]);
 		var defender;
 
-		if (!pokemon.exists || !type.exists) {
+		if (!digimon.exists || !type.exists) {
 			// try the other way around
-			pokemon = Tools.getTemplate(targets[1]);
+			digimon = Tools.getTemplate(targets[1]);
 			type = Tools.getType(targets[0]);
 		}
-		defender = pokemon.species+' (not counting abilities)';
+		defender = digimon.species+' (not counting abilities)';
 
-		if (!pokemon.exists || !type.exists) {
+		if (!digimon.exists || !type.exists) {
 			// try two types
 			if (Tools.getType(targets[0]).exists && Tools.getType(targets[1]).exists) {
 				// two types
 				type = Tools.getType(targets[0]);
 				defender = Tools.getType(targets[1]).id;
-				pokemon = {types: [defender]};
+				digimon = {types: [defender]};
 				if (Tools.getType(targets[2]).exists) {
 					defender = Tools.getType(targets[1]).id + '/' + Tools.getType(targets[2]).id;
-					pokemon = {types: [Tools.getType(targets[1]).id, Tools.getType(targets[2]).id]};
+					digimon = {types: [Tools.getType(targets[1]).id, Tools.getType(targets[2]).id]};
 				}
 			} else {
 				if (!targets[1]) {
@@ -391,8 +379,8 @@ var commands = exports.commands = {
 
 		if (!this.canBroadcast()) return;
 
-		var typeMod = Tools.getEffectiveness(type.id, pokemon);
-		var notImmune = Tools.getImmunity(type.id, pokemon);
+		var typeMod = Tools.getEffectiveness(type.id, digimon);
+		var notImmune = Tools.getImmunity(type.id, digimon);
 		var factor = 0;
 		if (notImmune) {
 			factor = Math.pow(2, typeMod);
@@ -462,7 +450,7 @@ var commands = exports.commands = {
 			'- We wait a few minutes before restarting so people can finish up their battles<br />' +
 			'- The restart itself will take around 0.6 seconds<br />' +
 			'- Your ladder ranking and teams will not change<br />' +
-			'- We are restarting to update Pokémon Showdown to a newer version' +
+			'- We are restarting to update Digibrawl to a newer version (probably)' +
 			'</div>');
 	},
 
@@ -481,27 +469,19 @@ var commands = exports.commands = {
 		var matched = false;
 		if (!target || target === 'all') {
 			matched = true;
-			buffer += '<a href="http://www.smogon.com/sim/faq">Frequently Asked Questions</a><br />';
+			buffer += '<a href="http://www.digibrawl.com/faq">Frequently Asked Questions</a><br />';
 		}
 		if (target === 'all' || target === 'deviation') {
 			matched = true;
-			buffer += '<a href="http://www.smogon.com/sim/faq#deviation">Why did this user gain or lose so many points?</a><br />';
-		}
-		if (target === 'all' || target === 'doubles' || target === 'triples' || target === 'rotation') {
-			matched = true;
-			buffer += '<a href="http://www.smogon.com/sim/faq#doubles">Can I play doubles/triples/rotation battles here?</a><br />';
-		}
-		if (target === 'all' || target === 'randomcap') {
-			matched = true;
-			buffer += '<a href="http://www.smogon.com/sim/faq#randomcap">What is this fakemon and what is it doing in my random battle?</a><br />';
+			buffer += '<a href="http://www.digibrawl.com/faq#deviation">Why did this user gain or lose so many points?</a><br />';
 		}
 		if (target === 'all' || target === 'restarts') {
 			matched = true;
-			buffer += '<a href="http://www.smogon.com/sim/faq#restarts">Why is the server restarting?</a><br />';
+			buffer += '<a href="http://www.digibrawl.com/faq#restarts">Why is the server restarting?</a><br />';
 		}
 		if (target === 'all' || target === 'staff') {
 			matched = true;
-			buffer += '<a href="http://www.smogon.com/sim/staff_faq">Staff FAQ</a><br />';
+			buffer += '<a href="http://www.digibrawl.com/staff_faq">Staff FAQ</a><br />';
 		}
 		if (!matched) {
 			return this.sendReply('The FAQ entry "'+target+'" was not found. Try /faq for general help.');
@@ -511,131 +491,24 @@ var commands = exports.commands = {
 
 	banlists: 'tiers',
 	tiers: function(target, room, user) {
+		// TODO
 		if (!this.canBroadcast()) return;
 		target = toId(target);
 		var buffer = '';
 		var matched = false;
 		if (!target || target === 'all') {
 			matched = true;
-			buffer += '- <a href="http://www.smogon.com/tiers/">Smogon Tiers</a><br />';
-			buffer += '- <a href="http://www.smogon.com/bw/banlist/">The banlists for each tier</a><br />';
+			buffer += '- <a href="http://www.digibrawl.com/tiers/">Tiers</a><br />';
+			buffer += '- <a href="http://www.digibrawl.com/banlist/">The banlists for each tier</a><br />';
 		}
 		if (target === 'all' || target === 'ubers' || target === 'uber') {
 			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/uber">Uber Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'overused' || target === 'ou') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/ou">Overused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'underused' || target === 'uu') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/uu">Underused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'rarelyused' || target === 'ru') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/ru">Rarelyused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'neverused' || target === 'nu') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/nu">Neverused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'littlecup' || target === 'lc') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/lc">Little Cup Pokemon</a><br />';
+			buffer += '- <a href="http://www.smogon.com/tiers/rookie">Rookie Digimon</a><br />';
 		}
 		if (!matched) {
 			return this.sendReply('The Tiers entry "'+target+'" was not found. Try /tiers for general help.');
 		}
 		this.sendReplyBox(buffer);
-	},
-
-	analysis: 'smogdex',
-	strategy: 'smogdex',
-	smogdex: function(target, room, user) {
-		if (!this.canBroadcast()) return;
-
-		var targets = target.split(',');
-		var pokemon = Tools.getTemplate(targets[0]);
-		var item = Tools.getItem(targets[0]);
-		var move = Tools.getMove(targets[0]);
-		var ability = Tools.getAbility(targets[0]);
-		var atLeastOne = false;
-		var generation = (targets[1] || "bw").trim().toLowerCase();
-		var genNumber = 5;
-
-		if (generation === "bw" || generation === "bw2" || generation === "5" || generation === "five") {
-			generation = "bw";
-		} else if (generation === "dp" || generation === "dpp" || generation === "4" || generation === "four") {
-			generation = "dp";
-			genNumber = 4;
-		} else if (generation === "adv" || generation === "rse" || generation === "rs" || generation === "3" || generation === "three") {
-			generation = "rs";
-			genNumber = 3;
-		} else if (generation === "gsc" || generation === "gs" || generation === "2" || generation === "two") {
-			generation = "gs";
-			genNumber = 2;
-		} else if(generation === "rby" || generation === "rb" || generation === "1" || generation === "one") {
-			generation = "rb";
-			genNumber = 1;
-		} else {
-			generation = "bw";
-		}
-		
-		// Pokemon
-		if (pokemon.exists) {
-			atLeastOne = true;
-			if (genNumber < pokemon.gen) {
-				return this.sendReplyBox(pokemon.name+' did not exist in '+generation.toUpperCase()+'!');
-			}
-			if (pokemon.tier === 'G4CAP' || pokemon.tier === 'G5CAP') {
-				generation = "cap";
-			}
-	
-			var poke = pokemon.name.toLowerCase();
-			if (poke === 'nidoranm') poke = 'nidoran-m';
-			if (poke === 'nidoranf') poke = 'nidoran-f';
-			if (poke === 'farfetch\'d') poke = 'farfetchd';
-			if (poke === 'mr. mime') poke = 'mr_mime';
-			if (poke === 'mime jr.') poke = 'mime_jr';
-			if (poke === 'deoxys-attack' || poke === 'deoxys-defense' || poke === 'deoxys-speed' || poke === 'kyurem-black' || poke === 'kyurem-white') poke = poke.substr(0,8);
-			if (poke === 'wormadam-trash') poke = 'wormadam-s';
-			if (poke === 'wormadam-sandy') poke = 'wormadam-g';
-			if (poke === 'rotom-wash' || poke === 'rotom-frost' || poke === 'rotom-heat') poke = poke.substr(0,7);
-			if (poke === 'rotom-mow') poke = 'rotom-c';
-			if (poke === 'rotom-fan') poke = 'rotom-s';
-			if (poke === 'giratina-origin' || poke === 'tornadus-therian' || poke === 'landorus-therian') poke = poke.substr(0,10);
-			if (poke === 'shaymin-sky') poke = 'shaymin-s';
-			if (poke === 'arceus') poke = 'arceus-normal';
-			if (poke === 'thundurus-therian') poke = 'thundurus-t';
-	
-			this.sendReplyBox('<a href="http://www.smogon.com/'+generation+'/pokemon/'+poke+'">'+generation.toUpperCase()+' '+pokemon.name+' analysis</a>, brought to you by <a href="http://www.smogon.com">Smogon University</a>');
-		}
-		
-		// Item
-		if (item.exists && genNumber > 1 && item.gen <= genNumber) {
-			atLeastOne = true;
-			var itemName = item.name.toLowerCase().replace(' ', '_');
-			this.sendReplyBox('<a href="http://www.smogon.com/'+generation+'/items/'+itemName+'">'+generation.toUpperCase()+' '+item.name+' item analysis</a>, brought to you by <a href="http://www.smogon.com">Smogon University</a>');
-		}
-		
-		// Ability
-		if (ability.exists && genNumber > 2 && ability.gen <= genNumber) {
-			atLeastOne = true;
-			var abilityName = ability.name.toLowerCase().replace(' ', '_');
-			this.sendReplyBox('<a href="http://www.smogon.com/'+generation+'/abilities/'+abilityName+'">'+generation.toUpperCase()+' '+ability.name+' ability analysis</a>, brought to you by <a href="http://www.smogon.com">Smogon University</a>');
-		}
-		
-		// Move
-		if (move.exists && move.gen <= genNumber) {
-			atLeastOne = true;
-			var moveName = move.name.toLowerCase().replace(' ', '_');
-			this.sendReplyBox('<a href="http://www.smogon.com/'+generation+'/moves/'+moveName+'">'+generation.toUpperCase()+' '+move.name+' move analysis</a>, brought to you by <a href="http://www.smogon.com">Smogon University</a>');
-		}
-		
-		if (!atLeastOne) {
-			return this.sendReplyBox('Pokemon, item, move, or ability not found for generation ' + generation.toUpperCase() + '.');
-		}
 	},
 
 	/*********************************************************
@@ -648,10 +521,13 @@ var commands = exports.commands = {
 	},
 
 	br: 'banredirect',
+	banredir: 'banredirect',
 	banredirect: function() {
 		this.sendReply('/banredirect - This command is obsolete and has been removed.');
+		// Your mom is obsolete. TODO: REINSTATE BANREDIR GLORY
 	},
 
+	lobby: 'lobbychat',
 	lobbychat: function(target, room, user, connection) {
 		target = toId(target);
 		if (target === 'off') {
@@ -716,13 +592,13 @@ var commands = exports.commands = {
 		}
 		if (target === 'all' || target === 'data') {
 			matched = true;
-			this.sendReply('/data [pokemon/item/move/ability] - Get details on this pokemon/item/move/ability.');
-			this.sendReply('!data [pokemon/item/move/ability] - Show everyone these details. Requires: + % @ & ~');
+			this.sendReply('/data [digimon/item/move/ability] - Get details on this digimon/item/move/ability.');
+			this.sendReply('!data [digimon/item/move/ability] - Show everyone these details. Requires: + % @ & ~');
 		}
 		if (target === "all" || target === 'analysis') {
 			matched = true;
-			this.sendReply('/analysis [pokemon], [generation] - Links to the Smogon University analysis for this Pokemon in the given generation.');
-			this.sendReply('!analysis [pokemon], [generation] - Shows everyone this link. Requires: + % @ & ~');
+			this.sendReply('/analysis [digimon], [generation] - Links to the Digibrawl analysis for this Digimon in the given generation.');
+			this.sendReply('!analysis [digimon], [generation] - Shows everyone this link. Requires: + % @ & ~');
 		}
 		if (target === 'all' || target === 'groups') {
 			matched = true;
@@ -731,7 +607,7 @@ var commands = exports.commands = {
 		}
 		if (target === 'all' || target === 'opensource') {
 			matched = true;
-			this.sendReply('/opensource - Links to PS\'s source code repository.');
+			this.sendReply('/opensource - Links to Digibrawl\'s source code repository.');
 			this.sendReply('!opensource - Show everyone that information. Requires: + % @ & ~');
 		}
 		if (target === 'all' || target === 'avatars') {
@@ -741,23 +617,18 @@ var commands = exports.commands = {
 		}
 		if (target === 'all' || target === 'intro') {
 			matched = true;
-			this.sendReply('/intro - Provides an introduction to competitive pokemon.');
+			this.sendReply('/intro - Provides an introduction to competitive digimon.');
 			this.sendReply('!intro - Show everyone that information. Requires: + % @ & ~');
 		}
 		if (target === 'all' || target === 'cap') {
 			matched = true;
-			this.sendReply('/cap - Provides an introduction to the Create-A-Pokemon project.');
+			this.sendReply('/cap - Provides an introduction to the Create-A-Digimon project.');
 			this.sendReply('!cap - Show everyone that information. Requires: + % @ & ~');
 		}
 		if (target === 'all' || target === 'om') {
 			matched = true;
 			this.sendReply('/om - Provides links to information on the Other Metagames.');
 			this.sendReply('!om - Show everyone that information. Requires: + % @ & ~');
-		}
-		if (target === 'all' || target === 'learn' || target === 'learnset' || target === 'learnall') {
-			matched = true;
-			this.sendReply('/learn [pokemon], [move, move, ...] - Displays how a Pokemon can learn the given moves, if it can at all.')
-			this.sendReply('!learn [pokemon], [move, move, ...] - Show everyone that information. Requires: + % @ & ~')
 		}
 		if (target === 'all' || target === 'calc' || target === 'caclulator') {
 			matched = true;
@@ -835,7 +706,7 @@ var commands = exports.commands = {
 		}
 		if (target === "%" || target === 'warn' || target === 'k') {
 			matched = true;
-			this.sendReply('/warn OR /k [username], [reason] - Warns a user showing them the Pokemon Showdown Rules and [reason] in an overlay. Requires: % @ & ~');
+			this.sendReply('/warn OR /k [username], [reason] - Warns a user showing them the Digimon Showdown Rules and [reason] in an overlay. Requires: % @ & ~');
 		}
 		if (target === '%' || target === 'mute' || target === 'm') {
 			matched = true;
@@ -869,10 +740,6 @@ var commands = exports.commands = {
 		if (target === '&' || target === 'declare' ) {
 			matched = true;
 			this.sendReply('/declare [message] - Anonymously announces a message. Requires: & ~');
-		}
-		if (target === '&' || target === 'potd' ) {
-			matched = true;
-			this.sendReply('/potd [pokemon] - Sets the Random Battle Pokemon of the Day. Requires: & ~');
 		}
 		if (target === '%' || target === 'announce' || target === 'wall' ) {
 			matched = true;
