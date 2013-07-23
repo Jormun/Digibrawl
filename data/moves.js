@@ -1,4 +1,4 @@
-exports.BattleMovedex = {
+exports.BattleMoves = {
 	/**
 	 * First we list the DS-free cost moves that are static for all stages.
 	 */
