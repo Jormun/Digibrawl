@@ -40,6 +40,61 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "melee",
 		type: "Neutral"
+		
+		name: "Angel Rod",
+		basePower: 140,
+		desc: "The Digimon uses the holy rod to attack the enemy.",
+		shortDesc: "Deals damage.",
+		ds: 19,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Light"
+
+		name: "Hand Of Fate",
+		basePower: 494,
+		desc: "The Digimon attacks the enemy with a shiny gold fist.",
+		shortDesc: "Deals damage.",
+		ds: 81,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Light"
+
+		name: "Omni Typhoon",
+		basePower: 910,
+		desc: "The Digimon creates a whirlpool by turning and attacks",
+		shortDesc: "Deals damage.",
+		ds: 187,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+
+		name: "Heaven's Charm",
+		basePower: 780,
+		desc: "The Digimon fires a concentrated bolt of light to attack the enemy",
+		shortDesc: "Deals damage.",
+		ds: 90,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Light"
+
+		name: "Holy Arrow",
+		basePower: 1150,
+		desc: "The Digimon shoots an arrow of light to attack the enemy",
+		shortDesc: "Deals damage.",
+		ds: 117,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Light"
 	},
 	// Ultimate
 	attackultimate: {
