@@ -108,6 +108,18 @@ exports.BattleMoves = {
 		target: "melee",
 		type: "Light"
 	},
+	atomicblaster: {
+		name: "Atomic Blaster",
+		basePower: 1234,
+		desc: "Fires a powerful charge from its chest.",
+		shortDesc: "Fires a powerful charge.",
+		ds: 152,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Fire"
+	},
 	babyclaw: {
 		name: "Baby Claw",
 		basePower: 120,
@@ -131,6 +143,138 @@ exports.BattleMoves = {
 		secondary: false,
 		target: "ranged",
 		type: "Fire"
+	},
+	crimsonlight: {
+		name: "Crimson Light",
+		basePower: 3306,
+		desc: "Blinds enemy opponent with a holy light also inflicting damage.",
+		shortDesc: "Blinds enemy opponent with a holy light.",
+		ds: 3340,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Light"
+	},
+	dashdoubleclaw: {
+		name: "Dash Double Claw",
+		basePower: 236,
+		desc: "Pushes out ribbons to hit the opponent.",
+		shortDesc: "Uses ribbons to hit the opponent.",
+		ds: 25,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+	},
+	doublebackhand: {
+		name: "Double Back Hand"
+		basePower: 128,
+		desc, "Rolls body to attack.",
+		shortDesc: "Rolls body to attack.",
+		ds: 8,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+	},
+	doublecrescentmirage: {
+		name: "Double Crescent Mirage",
+		basePower: 1057,
+		desc: "Conjures two wind blades to attack the opponent.",
+		shortDesc: "Makes two wind blades to strike opponent.",
+		ds: 99,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Wind"
+	},
+	doubleedge: {
+		name: "Double Edge",
+		basePower: 647,
+		desc: "Strikes the opponent with both bladed arms causing tons of damage.",
+		shortDesc: "Strikes opponent with bladed arms.",
+		ds: 52,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Fire"
+	},
+	exhaustflame: {
+		name: "Exhaust Flame",
+		basePower: 795,
+		desc: "Shoots a powerful fireball from the mouth.",
+		shortDesc: "Fires a strong fireball.",
+		ds: 126,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Fire"
+	},
+	finalelysian: {
+		name: "Final Elysian",
+		basePower: 2110,
+		desc: "Eliminates evil with power waves of light from Aegis, the Holy Shield.",
+		shortDesc: "Uses Aegis to eliminate evil.",
+		ds: 187,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Light"
+	},
+	fullmoonblaster: {
+		name: "Full Moon Blaster",
+		basePower: 1454,
+		desc: "Concentrates moonlight energy and blasts the opponent with a strong force.",
+		shortDesc: "Blasts opponent with moonlight energy.",
+		ds: 260,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Wind"
+	},
+	fullmoonmeteorimpact: {
+		name: "Full Moon Meteor Impact",
+		basePower: 1630,
+		desc: "Slams opponent with a meteor rivaling the size of the moon.",
+		shortDesc: "Slams opponent with giant meteor.",
+		ds: 205,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+	},
+	galeclaw: {
+		name: "Gale Claw",
+		basePower: 465,
+		desc: "Strikes the opponent with the force of wind.",
+		shortDesc: "Stikes with the wind.",
+		ds: 61,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+	},
+	gaorush: {
+		name: "Gao Rush",
+		basePower: 71,
+		desc, "Repeatedly punches the opponent."
+		shortDesk: "Punches opponent repeatedly.",
+		ds: 6,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
 	},
 	hakasebo: {
 		desc: "Tries to persuade the opponent with its rod."
@@ -174,6 +318,42 @@ exports.BattleMoves = {
 		target: "ranged",
 		type: "Light"
 	},
+	howlingcannon: {
+		name: "Howling Cannon"
+		basePower: 754,
+		desc: "Opens mouth and shoots beam at opponent.",
+		shortDesc: "Shoots powerful beam at opponent.",
+		ds: 114,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Wind",
+	},
+	invinciblesword: {
+		name: "Invincible Sword",
+		basePower: 1745,
+		desc: "Slashes enemy opponent with a sword blessed by the gods.",
+		shortDesc: "Slashes enemy with holy sword.",
+		ds: 245,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Light"
+	},
+	lunahookslasher: {
+		name: "Luna Hook Slasher",
+		basePower: 3298,
+		desc: "Slashes opponent with a blade crafted from the moon itself.",
+		shortDesc: "Slashes opponent with a moon blade.",
+		ds: 450,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+	},
 	omnityphoon: {
 		name: "Omni Typhoon",
 		basePower: 910,
@@ -186,11 +366,83 @@ exports.BattleMoves = {
 		target: "melee",
 		type: "Wind"
 	},
+	plasmablade: {
+		name: "Plasma Blade",
+		basePower: 290,
+		desc: "Gathers energy in both arms to create lightning and strikes the enemy.",
+		shortDesc: "Strikes the enemy with lightning created blades."
+		ds: 24,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Thunder"
+	},
+	pyrosphere: {
+		name: "Pyro Sphere",
+		basePower:
+		desc: "Shoots flame balls out of mouth.",
+		shortDesc: "Shoots flame balls.",
+		ds: 38,
+		cd:3,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Fire"
+	},
+	rockbreaker: {
+		name: "Rock Breaker",
+		basePower:
+		desc: "Rushes into opponent to cause damage.",
+		shortDesc: "Charges into opponent.",
+		ds: 11,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Fire"
+	},
+	rollingupper: {
+		name: "Rolling Upper"
+		basePower: 238,
+		desc: "Jumps, then rolls body to attack.",
+		shortDesc: "Jumps and rolls body to attack.",
+		ds: 23,
+		cd: 3,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
+	},
+	royalsaber: {
+		name: "Royal Saber",
+		basePower: 932,
+		desc: "Slashes opponent with the holy weapon Graam.",
+		shortDesc: "Slashes opponent with a holy weapon.",
+		ds: 83,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Light"
+	},
 	sharpclaw: {
 
 	},
 	sharperclaw: {
 
+	},
+	spiralblow: {
+		name: "Spiral Blow",
+		basePower: 397,
+		desc: "Shoots tornado out of mouth.",
+		shortDesc: "Shoots tornado out of mouth.",
+		ds: 43,
+		cd: 2,
+		priority: 0,
+		secondary: false,
+		target: "ranged",
+		type: "Wind"
 	},
 	spitfireblast: {
 	 	name: "Spitfire Blast",
@@ -203,5 +455,17 @@ exports.BattleMoves = {
 		secondary: false,
 		target: "ranged",
 		type: "Fire"
+	},
+	winningknuckle: {
+		name: "Winning Knuckle",
+		basePower: 258,
+		desc: "Quickly gets close to the opponent and lands powerful punches.",
+		shortDesc: "Closes distance and lands strong punches.",
+		ds: 28,
+		cd: 1,
+		priority: 0,
+		secondary: false,
+		target: "melee",
+		type: "Wind"
 	}
 };
