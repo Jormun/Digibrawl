@@ -114,7 +114,7 @@ exports.BattleMovedex = {
 		desc: "Agumon attacks with its claws.",
 		shortDesc: "Claws the enemy.",
 		ds: 14,
-		cd: 2,
+		cd: 1,
 		priority: 0,
 		secondary: false,
 		target: "melee",
@@ -126,17 +126,17 @@ exports.BattleMovedex = {
 		desc: "Agumon shoots fireballs to the enemy.",
 		shortDesc: "Shoots fireballs.",
 		ds: 12,
-		cd: 2,
+		cd: 1,
 		priority: 0,
 		secondary: false,
 		target: "ranged",
 		type: "Fire"
 	},
 	hakasebo: {
-
+		desc: "Tries to persuade the opponent with its rod."
 	},
 	hakasebou: {
-
+		desc: "Agumon tries to enchant itself into cleverness with its hat."
 	},
 	handoffate: {
 		name: "Hand Of Fate",
@@ -198,7 +198,7 @@ exports.BattleMovedex = {
 		desc: "Agumon shoots flames to his enemies, burning and hurting them.",
 		shortDesc: "Shoots flame from Agumon's mouth.",
 		ds: 19,
-		cd: 4,
+		cd: 3,
 		priority: 0,
 		secondary: false,
 		target: "ranged",
