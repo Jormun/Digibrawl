@@ -12,7 +12,7 @@
  */
 
 module.exports = (function () {
-	var dataTypes = ['FormatsData', 'Learnsets', 'Digivice', 'Moves', 'TypeChart', 'Scripts', 'Items', 'Formats'];
+	var dataTypes = ['Learnsets', 'Digivice', 'Moves', 'TypeChart', 'Scripts', 'Items', 'Formats'];
 	var dataFiles = {
 		'Digivice': 'digivice.js',
 		'Moves': 'moves.js',
@@ -20,7 +20,6 @@ module.exports = (function () {
 		'Scripts': 'scripts.js',
 		'Items': 'items.js',
 		'Formats': 'formats.js',
-		'FormatsData': 'formats-data.js',
 		'Learnsets': 'learnsets.js'
 	};
 	function Tools() {
