@@ -196,16 +196,11 @@ var BattleDigimon = (function() {
 		this.baseMoves = this.moves;
 		this.moveset = [];
 		this.baseMoveset = [];
-		this.level = clampIntRange(set.forcedLevel || set.level || 90, 1, 1000);
+		this.level = clampIntRange(set.forcedLevel || set.level || 90, 1, 90);
 		this.fullname = this.side.id + ': ' + this.name;
 		this.details = this.species + (this.level===90?'':', L'+this.level);
-		this.statusData = {};
 		this.volatiles = {};
-		this.negateImmunity = {};
-		this.height = this.template.height;
-		this.heightm = this.template.heightm;
-		this.weight = this.template.weight;
-		this.weightkg = this.template.weightkg;
+		this.size = this.template.size;
 		this.ignore = {};
 		this.items = [toId(set.items[0]), toId(set.items[1])];
 		this.itemsData = {0:{id: this.items[0]}, 1:{id: this.items[1]}};
@@ -233,13 +228,10 @@ var BattleDigimon = (function() {
 		this.clearVolatile(true);
 	}
 
-	BattleDigimon.prototype.trapped = false;
-	BattleDigimon.prototype.maybeTrapped = false;
 	BattleDigimon.prototype.hp = 0;
 	BattleDigimon.prototype.maxhp = 100;
 	BattleDigimon.prototype.fainted = false;
 	BattleDigimon.prototype.lastItem = '';
-	BattleDigimon.prototype.status = '';
 	BattleDigimon.prototype.position = 0;
 	BattleDigimon.prototype.lastMove = '';
 	BattleDigimon.prototype.moveThisTurn = '';
@@ -248,15 +240,12 @@ var BattleDigimon = (function() {
 	BattleDigimon.prototype.usedItemThisTurn = false;
 	BattleDigimon.prototype.isActive = false;
 	BattleDigimon.prototype.isStarted = false; // has this digimon's Start events run yet?
-	BattleDigimon.prototype.transformed = false;
 	BattleDigimon.prototype.duringMove = false;
 	BattleDigimon.prototype.speed = 0;
 	BattleDigimon.prototype.stage = 'Rookie';
 
 	BattleDigimon.prototype.toString = function() {
 		var fullname = this.fullname;
-		if (this.illusion) fullname = this.illusion.fullname;
-
 		var positionList = ['a','b','c','d','e','f'];
 		if (this.isActive) return fullname.substr(0,2) + positionList[this.position] + fullname.substr(2);
 		return fullname;
@@ -268,7 +257,6 @@ var BattleDigimon = (function() {
 	BattleDigimon.prototype.update = function(init) {
 		// Reset for disabled moves
 		this.disabledMoves = {};
-		this.negateImmunity = {};
 		// reset for ignore settings
 		this.ignore = {};
 		for (var i in this.moveset) {
@@ -291,8 +279,7 @@ var BattleDigimon = (function() {
 	BattleDigimon.prototype.getStat = function(statName, unboosted, unmodified) {
 		statName = toId(statName);
 		var boost = this.boosts[statName];
-
-		if (statName === 'hp') return this.maxhp; // please just read .maxhp directly
+		if (statName === 'hp') return this.maxhp;
 
 		// base stat
 		var stat = this.stats[statName];
@@ -363,12 +350,6 @@ var BattleDigimon = (function() {
 			lockedMove = toId(lockedMove);
 			this.trapped = true;
 		}
-		if (lockedMove === 'recharge') {
-			return [{
-				move: 'Recharge',
-				id: 'recharge'
-			}];
-		}
 		var moves = [];
 		moves.push(this.getStageMove(this.stage));
 		var hasValidMove = false;
@@ -378,7 +359,7 @@ var BattleDigimon = (function() {
 				if (lockedMove === move.id) return [move];
 				continue;
 			}
-			if (this.disabledMoves[move.id] || !move.pp) {
+			if (this.disabledMoves[move.id] || this.side.ds < move.ds) {
 				move.disabled = true;
 			} else if (!move.disabled) {
 				hasValidMove = true;
@@ -462,27 +443,6 @@ var BattleDigimon = (function() {
 			this.battle.singleEvent('Copy', status, this.volatiles[i], this);
 		}
 	};
-	BattleDigimon.prototype.formeChange = function(template, dontRecalculateStats) {
-		template = this.battle.getTemplate(template);
-
-		if (!template.abilities) return false;
-		this.template = template;
-		this.types = this.template.types;
-		if (!dontRecalculateStats) {
-			for (var statName in this.stats) {
-				var stat = this.template.baseStats[statName];
-				stat = Math.floor(Math.floor(2*stat+this.set.ivs[statName]+Math.floor(this.set.evs[statName]/4))*this.level / 100 + 5);
-
-				// nature
-				var nature = this.battle.getNature(this.set.nature);
-				if (statName === nature.plus) stat *= 1.1;
-				if (statName === nature.minus) stat *= 0.9;
-				this.stats[statName] = Math.floor(stat);
-			}
-			this.speed = this.stats.spe;
-		}
-		return true;
-	};
 	BattleDigimon.prototype.clearVolatile = function(init) {
 		this.boosts = {hp:0, ds:0, at:0, de:0,ct:0, ev:0, ht:0, bl:0, as:0};
 		this.moveset = [];
@@ -516,6 +476,7 @@ var BattleDigimon = (function() {
 		this.update(init);
 	};
 	BattleDigimon.prototype.hasType = function (type) {
+		// TODO: This
 		if (!type) return false;
 		if (Array.isArray(type)) {
 			for (var i=0; i<type.length; i++) {
@@ -527,14 +488,13 @@ var BattleDigimon = (function() {
 		}
 		return false;
 	};
-	// returns the amount of damage actually dealt
 	BattleDigimon.prototype.faint = function(source, effect) {
 		if (this.fainted) return 0;
 		var d = this.hp;
 		this.hp = 0;
 		this.switchFlag = false;
 		this.status = 'fnt';
-		//this.fainted = true;
+		this.fainted = true;
 		this.battle.faintQueue.push({
 			target: this,
 			source: source,
@@ -815,7 +775,7 @@ var BattleSide = (function() {
 		this.name = name;
 		this.digimon = [];
 		this.sideConditions = {};
-		this.ds = 0;
+		this.maxds = 400;
 		this.id = (n?'p2':'p1');
 		this.active = [null, null, null];
 		this.team = this.battle.getTeam(this, team);
@@ -825,7 +785,9 @@ var BattleSide = (function() {
 		this.digimonLeft = this.digimon.length;
 		for (var i=0; i<this.digimon.length; i++) {
 			this.digimon[i].position = i;
+			this.maxds += this.digimon[i].ds;
 		}
+		this.ds = Math.floor(this.maxds / 2);
 	}
 
 	BattleSide.prototype.isActive = false;
@@ -1711,10 +1673,6 @@ var Battle = (function() {
 			var oldActive = side.active[pos];
 			var lastMove = null;
 			lastMove = this.getMove(oldActive.lastMove);
-			if (oldActive.switchCopyFlag === 'copyvolatile') {
-				delete oldActive.switchCopyFlag;
-				digimon.copyVolatileFrom(oldActive);
-			}
 		}
 		this.runEvent('BeforeSwitchIn', digimon);
 		if (side.active[pos]) {
@@ -1748,52 +1706,6 @@ var Battle = (function() {
 		}
 		return canSwitchIn.length;
 	};
-	Battle.prototype.getRandomSwitchable = function(side) {
-		var canSwitchIn = [];
-		for (var i=side.active.length; i<side.digimon.length; i++) {
-			var digimon = side.digimon[i];
-			if (!digimon.fainted) {
-				canSwitchIn.push(digimon);
-			}
-		}
-		if (!canSwitchIn.length) {
-			return null;
-		}
-		return canSwitchIn[Math.floor(Math.random()*canSwitchIn.length)];
-	};
-	Battle.prototype.dragIn = function(side, pos) {
-		var digimon = this.getRandomSwitchable(side);
-		if (!pos) pos = 0;
-		if (!digimon || digimon.isActive) return false;
-		this.runEvent('BeforeSwitchIn', digimon);
-		if (side.active[pos]) {
-			var oldActive = side.active[pos];
-			if (!oldActive.hp) {
-				return false;
-			}
-			if (!this.runEvent('DragOut', oldActive)) {
-				return false;
-			}
-			this.runEvent('SwitchOut', oldActive);
-			oldActive.isActive = false;
-			oldActive.position = digimon.position;
-			digimon.position = pos;
-			side.digimon[digimon.position] = digimon;
-			side.digimon[oldActive.position] = oldActive;
-			oldActive.clearVolatile();
-		}
-		side.active[pos] = digimon;
-		digimon.isActive = true;
-		digimon.activeTurns = 0;
-		for (var m in digimon.moveset) {
-			digimon.moveset[m].used = false;
-		}
-		this.add('drag', side.active[pos], side.active[pos].getDetails);
-		digimon.update();
-		this.runEvent('SwitchIn', digimon);
-		this.addQueue({digimon: digimon, choice: 'runSwitch'});
-		return true;
-	};
 	Battle.prototype.faint = function(digimon, source, effect) {
 		digimon.faint(source, effect);
 	};
@@ -1813,6 +1725,7 @@ var Battle = (function() {
 			}
 			this.sides[i].faintedLastTurn = this.sides[i].faintedThisTurn;
 			this.sides[i].faintedThisTurn = false;
+			this.sides[i].ds += Math.floor(this.sides[i].ds * 10 / 100);
 		}
 		this.add('turn', this.turn);
 		this.makeRequest('move');
