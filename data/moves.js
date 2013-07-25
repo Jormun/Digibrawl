@@ -169,9 +169,9 @@ exports.BattleMoves = {
 		type: "Wind"
 	},
 	doublebackhand: {
-		name: "Double Back Hand"
+		name: "Double Back Hand",
 		basePower: 128,
-		desc, "Rolls body to attack.",
+		desc: "Rolls body to attack.",
 		shortDesc: "Rolls body to attack.",
 		ds: 8,
 		cd: 2,
@@ -267,7 +267,7 @@ exports.BattleMoves = {
 	gaorush: {
 		name: "Gao Rush",
 		basePower: 71,
-		desc, "Repeatedly punches the opponent."
+		desc: "Repeatedly punches the opponent.",
 		shortDesk: "Punches opponent repeatedly.",
 		ds: 6,
 		cd: 1,
@@ -319,7 +319,7 @@ exports.BattleMoves = {
 		type: "Light"
 	},
 	howlingcannon: {
-		name: "Howling Cannon"
+		name: "Howling Cannon",
 		basePower: 754,
 		desc: "Opens mouth and shoots beam at opponent.",
 		shortDesc: "Shoots powerful beam at opponent.",
@@ -370,7 +370,7 @@ exports.BattleMoves = {
 		name: "Plasma Blade",
 		basePower: 290,
 		desc: "Gathers energy in both arms to create lightning and strikes the enemy.",
-		shortDesc: "Strikes the enemy with lightning created blades."
+		shortDesc: "Strikes the enemy with lightning created blades.",
 		ds: 24,
 		cd: 1,
 		priority: 0,
@@ -380,11 +380,11 @@ exports.BattleMoves = {
 	},
 	pyrosphere: {
 		name: "Pyro Sphere",
-		basePower:
+		basePower: 290,
 		desc: "Shoots flame balls out of mouth.",
 		shortDesc: "Shoots flame balls.",
 		ds: 38,
-		cd:3,
+		cd: 3,
 		priority: 0,
 		secondary: false,
 		target: "ranged",
@@ -392,7 +392,7 @@ exports.BattleMoves = {
 	},
 	rockbreaker: {
 		name: "Rock Breaker",
-		basePower:
+		basePower: 200,
 		desc: "Rushes into opponent to cause damage.",
 		shortDesc: "Charges into opponent.",
 		ds: 11,
@@ -403,7 +403,7 @@ exports.BattleMoves = {
 		type: "Fire"
 	},
 	rollingupper: {
-		name: "Rolling Upper"
+		name: "Rolling Upper",
 		basePower: 238,
 		desc: "Jumps, then rolls body to attack.",
 		shortDesc: "Jumps and rolls body to attack.",

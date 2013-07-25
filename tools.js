@@ -556,12 +556,8 @@ module.exports = (function () {
 		if (!problems.length) return false;
 		return problems;
 	};
-	Tools.construct = function(mod) {
-		var tools = new Tools(mod);
-		// Scripts override Tools.
-		var ret = Object.create(tools);
-		if (ret.init) ret.init();
-		return ret;
+	Tools.construct = function() {
+		return new Tools();
 	};
 
 	moddedTools.base = Tools.construct();
