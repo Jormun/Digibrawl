@@ -560,7 +560,6 @@ module.exports = (function () {
 		var tools = new Tools(mod);
 		// Scripts override Tools.
 		var ret = Object.create(tools);
-		tools.install(ret);
 		if (ret.init) ret.init();
 		return ret;
 	};
