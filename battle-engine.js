@@ -2009,7 +2009,7 @@ var Battle = (function() {
 		var defender = target;
 		var rankTable = {'Baby':1,'In-Training':2,'Rookie':3,'Champion':4,'Ultimate':5,'Mega':6,'Burst':7,'Jogress':8};
 		var rankNum = rankTable[digimon.stage] || 1;
-		var baseDamage = Math.ceil(attacker.getStat('AT') * basePower / (35 * Math.log()(90 * attacker.getStat('DE')) * 0.065 * Math.pow(2, (rankNum * 1.05)));
+		var baseDamage = Math.ceil(attacker.getStat('AT') * basePower / (35 * Math.log(90 * attacker.getStat('DE')) * 0.065 * Math.pow(2, (rankNum * 1.05))));
 
 		// Crit
 		if (move.crit) {

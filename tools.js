@@ -65,13 +65,13 @@ module.exports = (function () {
 	};
 	Tools.prototype.getElementalEffectiveness = function(type, target) {
 		var totalTypeMod = 0;
-		if (!this.data.TypeChart.elements[target.element]) continue;
+		if (!this.data.TypeChart.elements[target.element]) return false;
 		var totalTypeMod = this.data.TypeChart.elements[target.element].damageTaken[type];
 		return totalTypeMod;
 	};
 	Tools.prototype.getAttributeEffectiveness = function(type, target) {
 		var totalAttrMod = 0;
-		if (!this.data.TypeChart.attributes[target.attribute]) continue;
+		if (!this.data.TypeChart.attributes[target.attribute]) return false;
 		var totalAttrMod = this.data.TypeChart.attributes[target.attribute].damageTaken[type];
 		return totalAttrMod;
 	};
